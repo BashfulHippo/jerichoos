@@ -1,0 +1,1 @@
+/mnt/c/Users/sokka/Documents/JerichoOS/examples/wasm-demos/fibonacci/target/wasm32-unknown-unknown/release/fibonacci_demo.wasm: /mnt/c/Users/sokka/Documents/JerichoOS/examples/wasm-demos/fibonacci/src/lib.rs
