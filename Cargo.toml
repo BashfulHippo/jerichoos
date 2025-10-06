@@ -1,6 +1,57 @@
 [package]
 name = "jericho_os"
 version = "0.1.0"
+authors = ["Your Name <your.email@example.com>"]
 edition = "2021"
 
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+opt-level = "z"     # Optimize for size
+lto = true          # Enable link-time optimization
+codegen-units = 1   # Better optimization (slower build)
+
 [dependencies]
+# Core bare-metal dependencies (architecture-independent)
+volatile = "0.2.6"
+spin = "0.9"
+linked_list_allocator = "0.10"  # Heap allocator
+
+# Wasm runtime (Phase 4)
+wasmi = { version = "0.31", default-features = false }
+
+[dependencies.lazy_static]
+version = "1.0"
+features = ["spin_no_std"]
+
+# x86-64 specific dependencies
+[target.'cfg(target_arch = "x86_64")'.dependencies]
+bootloader_api = "0.11"
+x86_64 = "0.15"
+uart_16550 = "0.3"
+pic8259 = "0.11"
+pc-keyboard = "0.7"
+
+# ARM64 specific dependencies (none yet, but reserved for future)
+[target.'cfg(target_arch = "aarch64")'.dependencies]
+
+# Build-time dependencies (not included in final binary)
+[build-dependencies]
+bootloader = "0.11"  # For creating bootable disk images at build time
+
+[[bin]]
+name = "jericho_os"
+path = "src/main.rs"
+
+[[bin]]
+name = "jericho_os_arm64"
+path = "src/main_aarch64.rs"
+
+[package.metadata.bootloader]
+# Bootloader 0.11.x configuration (replaces old bootimage format)
+run-args = [
+    "-serial", "stdio",
+    "-display", "none"
+]
