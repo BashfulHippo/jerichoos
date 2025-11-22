@@ -1,0 +1,7 @@
+/// JerichoOS WASM Demo Module
+///
+/// Provides canonical test suite for validating WASM runtime functionality
+
+mod wasm_tests;
+
+pub use wasm_tests::run_all_demos as run_demos;
