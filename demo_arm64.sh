@@ -3,7 +3,7 @@
 #
 # Single-command demo execution with clean output extraction
 
-set -e
+set -euo pipefail
 
 echo "╔════════════════════════════════════════════════════════╗"
 echo "║       JerichoOS ARM64 Demo Suite Runner               ║"
@@ -32,12 +32,17 @@ echo "╚═══════════════════════�
 echo ""
 
 # Check each demo
+failed=0
+suite_ok=0
 for i in 1 2 3 4 5; do
     if echo "$DEMO_OUTPUT" | grep -q "DEMO $i.*COMPLETE"; then
         DEMO_NAME=$(echo "$DEMO_OUTPUT" | grep "DEMO $i" | head -1 | sed 's/.*DEMO [0-9] //' | sed 's/ (.*//')
         echo "✅ Demo $i: $DEMO_NAME"
+        echo "DEMO_RESULT:$i:PASS"
     else
         echo "❌ Demo $i: FAILED or INCOMPLETE"
+        echo "DEMO_RESULT:$i:FAIL"
+        failed=1
     fi
 done
 
@@ -67,6 +72,7 @@ fi
 # Completion marker
 if echo "$DEMO_OUTPUT" | grep -q "All WASM Demos Complete"; then
     echo "✅ Suite: All demos completed successfully"
+    suite_ok=1
 else
     echo "⚠️  Suite: Incomplete execution"
 fi
@@ -91,4 +97,14 @@ echo "$DEMO_OUTPUT" > /tmp/jericho_arm64_demo.txt
 echo "📄 Full output saved to: /tmp/jericho_arm64_demo.txt"
 echo ""
 
+if [ "$failed" -eq 0 ] && [ "$suite_ok" -eq 1 ]; then
+    echo "RESULT: PASS"
+else
+    echo "RESULT: FAIL"
+fi
+
 echo "✅ Demo run complete!"
+
+if [ "$failed" -ne 0 ] || [ "$suite_ok" -ne 1 ]; then
+    exit 1
+fi

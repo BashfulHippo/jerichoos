@@ -46,19 +46,31 @@ jobs:
       timeout-minutes: 1
       run: |
         chmod +x demo_x86.sh
-        ./demo_x86.sh > output.txt 2>&1 || true
+        ./demo_x86.sh > output.txt 2>&1
         cat output.txt
 
     - name: validate results
       run: |
         for i in 1 2 3 4 5; do
-          if ! grep -q "Demo $i" output.txt; then
+          if ! grep -q "DEMO_RESULT:$i:PASS" output.txt; then
             echo "demo $i failed"
             cat output.txt
             exit 1
           fi
           echo "demo $i passed"
         done
+
+        if grep -q "DEMO_RESULT:[1-5]:FAIL" output.txt; then
+          echo "one or more demos reported failure"
+          cat output.txt
+          exit 1
+        fi
+
+        if ! grep -q "Suite: All demos completed successfully" output.txt; then
+          echo "demo suite did not complete cleanly"
+          cat output.txt
+          exit 1
+        fi
 
         echo "all demos passed"
 
