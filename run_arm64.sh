@@ -1,7 +1,7 @@
 #!/bin/bash
 # Run JerichoOS ARM64 kernel in QEMU
 
-set -e
+set -euo pipefail
 
 # Check if kernel exists
 if [ ! -f "target/aarch64/kernel_arm64.bin" ]; then
