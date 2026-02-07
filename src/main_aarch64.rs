@@ -337,7 +337,7 @@ pub extern "C" fn kernel_main(_dtb_ptr: usize) -> ! {
     demos::run_demos();
 
     uart_puts("\n");
-    uart_puts("✅ ARM64 kernel initialization complete!\n");
+    uart_puts("ARM64 kernel initialization complete!\n");
     uart_puts("\n");
 
     // Display benchmark counter information

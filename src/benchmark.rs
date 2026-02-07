@@ -96,10 +96,10 @@ impl BenchmarkResults {
         serial_println!("");
 
         serial_println!("🎯 Success Criteria:");
-        let boot_pass = if self.boot_time_us < 10_000 { "✅ PASS" } else { "❌ FAIL" };
+        let boot_pass = if self.boot_time_us < 10_000 { "PASS" } else { "FAIL" };
         serial_println!("  Boot < 10ms:      {} ({} µs)", boot_pass, self.boot_time_us);
 
-        let switch_pass = if self.avg_context_switch_ns < 5_000 { "✅ PASS" } else { "⚠️  WARN" };
+        let switch_pass = if self.avg_context_switch_ns < 5_000 { "PASS" } else { "WARN" };
         serial_println!("  Switch < 5µs:     {} ({} ns)", switch_pass, self.avg_context_switch_ns);
         serial_println!("");
     }
@@ -295,10 +295,10 @@ pub fn run_benchmark_suite() {
     // 5. Success Criteria
     serial_println!("🎯 Success Criteria");
     serial_println!("───────────────────");
-    let syscall_pass = if syscall_ns < 1_000 { "✅ PASS" } else { "⚠️  WARN" };
+    let syscall_pass = if syscall_ns < 1_000 { "PASS" } else { "WARN" };
     serial_println!("  Syscall < 1µs:    {} ({} ns)", syscall_pass, syscall_ns);
 
-    let switch_pass = if cycles_to_ns(avg_switch_cycles) < 5_000 { "✅ PASS" } else { "⚠️  WARN" };
+    let switch_pass = if cycles_to_ns(avg_switch_cycles) < 5_000 { "PASS" } else { "WARN" };
     serial_println!("  Switch < 5µs:     {} ({} ns)", switch_pass, cycles_to_ns(avg_switch_cycles));
     serial_println!("");
 }

@@ -36,13 +36,13 @@ pub fn demo_01_add() {
     match module.call_function("add", &[Value::I32(2), Value::I32(3)]) {
         Ok(Some(Value::I32(result))) => {
             if result == 5 {
-                serial_println!("{} ✅", result);
+                serial_println!("{} ", result);
             } else {
-                serial_println!("{} ❌ (expected 5)", result);
+                serial_println!("{}  (expected 5)", result);
             }
         }
-        Ok(_) => serial_println!("❌ (wrong return type)"),
-        Err(e) => serial_println!("❌ (error: {})", e),
+        Ok(_) => serial_println!(" (wrong return type)"),
+        Err(e) => serial_println!(" (error: {})", e),
     }
 
     // Test 2: mul(7, 6)
@@ -50,13 +50,13 @@ pub fn demo_01_add() {
     match module.call_function("mul", &[Value::I32(7), Value::I32(6)]) {
         Ok(Some(Value::I32(result))) => {
             if result == 42 {
-                serial_println!("{} ✅", result);
+                serial_println!("{} ", result);
             } else {
-                serial_println!("{} ❌ (expected 42)", result);
+                serial_println!("{}  (expected 42)", result);
             }
         }
-        Ok(_) => serial_println!("❌ (wrong return type)"),
-        Err(e) => serial_println!("❌ (error: {})", e),
+        Ok(_) => serial_println!(" (wrong return type)"),
+        Err(e) => serial_println!(" (error: {})", e),
     }
 
     // Test 3: factorial(5)
@@ -64,16 +64,16 @@ pub fn demo_01_add() {
     match module.call_function("factorial", &[Value::I32(5)]) {
         Ok(Some(Value::I32(result))) => {
             if result == 120 {
-                serial_println!("{} ✅", result);
+                serial_println!("{} ", result);
             } else {
-                serial_println!("{} ❌ (expected 120)", result);
+                serial_println!("{}  (expected 120)", result);
             }
         }
-        Ok(_) => serial_println!("❌ (wrong return type)"),
-        Err(e) => serial_println!("❌ (error: {})", e),
+        Ok(_) => serial_println!(" (wrong return type)"),
+        Err(e) => serial_println!(" (error: {})", e),
     }
 
-    serial_println!("[DEMO 1] ✅ COMPLETE\n");
+    serial_println!("[DEMO 1]  COMPLETE\n");
 }
 
 /// Demo 2: Host Function Calls
@@ -112,7 +112,7 @@ pub fn demo_02_hello() {
         Err(e) => serial_println!("[FAIL] print_range() failed: {}", e),
     }
 
-    serial_println!("[DEMO 2] ✅ COMPLETE\n");
+    serial_println!("[DEMO 2]  COMPLETE\n");
 }
 
 /// Demo 3: Syscall and Capability Test
@@ -172,7 +172,7 @@ pub fn demo_03_syscall() {
         Err(e) => serial_println!("[ OK ] Access denied via exception: {}", e),
     }
 
-    serial_println!("[DEMO 3] ✅ COMPLETE\n");
+    serial_println!("[DEMO 3]  COMPLETE\n");
 }
 
 /// Demo 4: MQTT Broker Pub/Sub
@@ -201,17 +201,17 @@ pub fn demo_04_mqtt() {
     // Initialize broker
     serial_print!("[TEST] Initializing broker... ");
     match broker.call_function("broker_init", &[]) {
-        Ok(Some(Value::I32(0))) => serial_println!("✅"),
+        Ok(Some(Value::I32(0))) => serial_println!(""),
         Ok(Some(Value::I32(code))) => {
-            serial_println!("❌ (error code: {})", code);
+            serial_println!(" (error code: {})", code);
             return;
         }
         Ok(_) => {
-            serial_println!("❌ (unexpected return)");
+            serial_println!(" (unexpected return)");
             return;
         }
         Err(e) => {
-            serial_println!("❌ ({})", e);
+            serial_println!(" ({})", e);
             return;
         }
     }
@@ -233,10 +233,10 @@ pub fn demo_04_mqtt() {
     // Initialize subscriber (client_id = 2)
     serial_print!("[TEST] Initializing subscriber (client_id=2)... ");
     match subscriber.call_function("subscriber_init", &[Value::I32(2)]) {
-        Ok(Some(Value::I32(0))) => serial_println!("✅"),
-        Ok(Some(Value::I32(code))) => serial_println!("⚠️  (code: {})", code),
-        Ok(_) => serial_println!("❌ (unexpected return)"),
-        Err(e) => serial_println!("❌ ({})", e),
+        Ok(Some(Value::I32(0))) => serial_println!(""),
+        Ok(Some(Value::I32(code))) => serial_println!("  (code: {})", code),
+        Ok(_) => serial_println!(" (unexpected return)"),
+        Err(e) => serial_println!(" ({})", e),
     }
 
     // Load publisher
@@ -256,10 +256,10 @@ pub fn demo_04_mqtt() {
     // Initialize publisher
     serial_print!("[TEST] Initializing publisher... ");
     match publisher.call_function("publisher_init", &[]) {
-        Ok(Some(Value::I32(0))) => serial_println!("✅"),
-        Ok(Some(Value::I32(code))) => serial_println!("⚠️  (code: {})", code),
-        Ok(_) => serial_println!("❌ (unexpected return)"),
-        Err(e) => serial_println!("❌ ({})", e),
+        Ok(Some(Value::I32(0))) => serial_println!(""),
+        Ok(Some(Value::I32(code))) => serial_println!("  (code: {})", code),
+        Ok(_) => serial_println!(" (unexpected return)"),
+        Err(e) => serial_println!(" ({})", e),
     }
 
     // Run publisher 5 times
@@ -270,7 +270,7 @@ pub fn demo_04_mqtt() {
         serial_print!("] Publishing... ");
         match publisher.call_function("publisher_run", &[]) {
             Ok(Some(Value::I32(_count))) => {
-                serial_println!("✅");
+                serial_println!("");
 
                 // Deliver pending IPC messages to subscriber (simulates kernel IPC delivery)
                 use crate::wasm_runtime;
@@ -281,9 +281,9 @@ pub fn demo_04_mqtt() {
                     serial_println!(" messages to subscriber");
                 }
             }
-            Ok(_) => serial_println!("❌ (unexpected return)"),
+            Ok(_) => serial_println!(" (unexpected return)"),
             Err(e) => {
-                serial_print!("❌ (error)");
+                serial_print!(" (error)");
                 let _ = e; // Suppress unused warning
                 serial_println!("");
             }
@@ -293,7 +293,7 @@ pub fn demo_04_mqtt() {
         let _ = i;
     }
 
-    serial_println!("\n[DEMO 4] ✅ COMPLETE");
+    serial_println!("\n[DEMO 4]  COMPLETE");
     serial_println!("✨ Full pub/sub flow working:");
     serial_println!("   1. Subscriber registered with broker via sys_mqtt_subscribe");
     serial_println!("   2. Publisher sends messages via sys_mqtt_publish");
@@ -327,16 +327,16 @@ pub fn demo_05_security() {
     // Initialize malicious module (no capabilities granted)
     serial_print!("[TEST] Initializing malicious module... ");
     match malicious.call_function("malicious_init", &[]) {
-        Ok(Some(Value::I32(0))) => serial_println!("✅"),
+        Ok(Some(Value::I32(0))) => serial_println!(""),
         Ok(Some(Value::I32(code))) => {
-            serial_print!("⚠️  (code: ");
+            serial_print!("  (code: ");
             serial_print!("<u32>");
             serial_println!(")");
             let _ = code;
         }
-        Ok(_) => serial_println!("❌ (unexpected return)"),
+        Ok(_) => serial_println!(" (unexpected return)"),
         Err(e) => {
-            serial_println!("❌");
+            serial_println!("");
             let _ = e;
         }
     }
@@ -347,15 +347,15 @@ pub fn demo_05_security() {
     match malicious.call_function("try_escape_sandbox", &[]) {
         Ok(Some(Value::I32(result))) => {
             if result == 0 {
-                serial_println!("[ OK ] ✅ Module confined to WASM linear memory");
+                serial_println!("[ OK ]  Module confined to WASM linear memory");
                 serial_println!("       Cannot access kernel address space");
             } else {
-                serial_println!("[FAIL] ❌ Unexpected result");
+                serial_println!("[FAIL]  Unexpected result");
             }
         }
-        Ok(_) => serial_println!("[FAIL] ❌ Unexpected return type"),
+        Ok(_) => serial_println!("[FAIL]  Unexpected return type"),
         Err(e) => {
-            serial_print!("[ OK ] ✅ WASM trapped: ");
+            serial_print!("[ OK ]  WASM trapped: ");
             serial_println!("{}", e);
         }
     }
@@ -366,14 +366,14 @@ pub fn demo_05_security() {
     match malicious.call_function("try_unauthorized_ipc", &[]) {
         Ok(Some(Value::I32(result))) => {
             if result < 0 {
-                serial_println!("[ OK ] ✅ Unauthorized IPC rejected (permission denied)");
+                serial_println!("[ OK ]  Unauthorized IPC rejected (permission denied)");
             } else {
-                serial_println!("[FAIL] ❌ Unauthorized IPC succeeded (SECURITY BUG!)");
+                serial_println!("[FAIL]  Unauthorized IPC succeeded (SECURITY BUG!)");
             }
         }
-        Ok(_) => serial_println!("[FAIL] ❌ Unexpected return type"),
+        Ok(_) => serial_println!("[FAIL]  Unexpected return type"),
         Err(e) => {
-            serial_print!("[ OK ] ✅ IPC trapped: ");
+            serial_print!("[ OK ]  IPC trapped: ");
             serial_println!("{}", e);
         }
     }
@@ -383,16 +383,16 @@ pub fn demo_05_security() {
     serial_println!("-----------------------------------");
     match malicious.call_function("try_stack_overflow", &[]) {
         Ok(Some(Value::I32(_result))) => {
-            serial_println!("[ OK ] ✅ Stack overflow handled gracefully");
+            serial_println!("[ OK ]  Stack overflow handled gracefully");
         }
-        Ok(_) => serial_println!("[FAIL] ❌ Unexpected return type"),
+        Ok(_) => serial_println!("[FAIL]  Unexpected return type"),
         Err(e) => {
-            serial_print!("[ OK ] ✅ Stack overflow prevented: ");
+            serial_print!("[ OK ]  Stack overflow prevented: ");
             serial_println!("{}", e);
         }
     }
 
-    serial_println!("\n[DEMO 5] ✅ COMPLETE");
+    serial_println!("\n[DEMO 5]  COMPLETE");
     serial_println!("🔒 Security guarantees validated:");
     serial_println!("   1. WASM sandbox isolates modules from kernel memory");
     serial_println!("   2. Capability system blocks unauthorized IPC (CRITICAL!)");
@@ -403,7 +403,7 @@ pub fn demo_05_security() {
 /// Run all WASM demos
 pub fn run_all_demos() {
     serial_println!("\n╔════════════════════════════════════════════════════╗");
-    serial_println!("║  JerichoOS WASM Demo Suite - Canonical Tests      ║");
+    serial_println!("  JerichoOS WASM Demo Suite - Canonical Tests      ");
     serial_println!("╚════════════════════════════════════════════════════╝");
 
     serial_println!("\n!!! ABOUT TO RUN DEMO 4 !!!\n");
@@ -416,6 +416,6 @@ pub fn run_all_demos() {
     demo_05_security();
 
     serial_println!("╔════════════════════════════════════════════════════╗");
-    serial_println!("║  All WASM Demos Complete!                         ║");
+    serial_println!("  All WASM Demos Complete!                         ");
     serial_println!("╚════════════════════════════════════════════════════╝\n");
 }
