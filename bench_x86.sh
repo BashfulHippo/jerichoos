@@ -4,7 +4,7 @@
 # Single-command benchmark execution with results extraction
 # WSL-compatible version using file-based serial output
 
-set -e
+set -euo pipefail
 
 echo "╔════════════════════════════════════════════════════════╗"
 echo "║       JerichoOS x86-64 Benchmark Suite Runner         ║"

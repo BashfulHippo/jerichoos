@@ -3,7 +3,7 @@
 #
 # Single-command benchmark execution with results extraction
 
-set -e
+set -euo pipefail
 
 echo "╔════════════════════════════════════════════════════════╗"
 echo "║       JerichoOS ARM64 Benchmark Suite Runner          ║"
@@ -109,7 +109,7 @@ echo "  • Binary size: 4.7 MB vs ~5 MB (comparable)"
 echo "  • Demo suite: 5/5 passing on both platforms ✅"
 echo "  • Benchmark suite: Executes on both platforms ✅"
 echo ""
-echo "For detailed comparison, see: docs/BENCHMARK_COMPARISON.md"
+echo "For detailed comparison, see: BENCHMARKS.md and docs/PROJECT_STATUS.md"
 echo ""
 
 # Save processed output
@@ -120,4 +120,4 @@ echo ""
 echo "✅ Benchmark run complete!"
 echo ""
 echo "💡 To enable numeric output, implement core::fmt::Write for ARM64 UART"
-echo "   (Future enhancement - see docs/PATHWAY_D_MMU_FINDINGS.md)"
+echo "   (Future enhancement tracked in docs/PROJECT_STATUS.md)"

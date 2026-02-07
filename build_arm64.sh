@@ -3,7 +3,7 @@
 #
 # This script builds the ARM64 kernel and creates a binary suitable for QEMU
 
-set -e
+set -euo pipefail
 
 echo "🔨 Building JerichoOS for ARM64"
 echo "================================"
@@ -15,14 +15,13 @@ if ! command -v qemu-system-aarch64 &> /dev/null; then
     echo "   Ubuntu/Debian: sudo apt install qemu-system-arm"
 fi
 
-# Use ARM64 cargo config
+# Use dedicated ARM64 target directory
 export CARGO_BUILD_TARGET_DIR="target/aarch64"
-cp .cargo/config_aarch64.toml .cargo/config.toml
 
 echo "Building ARM64 kernel..."
 # Capture full build output for CI debugging
 mkdir -p target/aarch64
-if ! cargo build \
+if ! cargo --config .cargo/config_aarch64.toml build \
     --bin jericho_os_arm64 \
     --target aarch64-jericho.json \
     --release \
@@ -85,9 +84,6 @@ fi
 SIZE=$(wc -c < target/aarch64/kernel_arm64.bin)
 echo "✓ Binary created: target/aarch64/kernel_arm64.bin ($SIZE bytes)"
 echo ""
-
-# Restore x86 config
-git checkout .cargo/config.toml 2>/dev/null || cp .cargo/config_x86.toml .cargo/config.toml 2>/dev/null || true
 
 echo "✅ ARM64 build complete!"
 echo ""
