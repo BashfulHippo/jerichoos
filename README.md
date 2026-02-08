@@ -76,7 +76,7 @@ JerichoOS is a research microkernel built in Rust (`no_std`) exploring **capabil
 | Scheduler | ✅ | ✅ | Preemptive multitasking |
 | CI/CD | ✅ | ✅ | GitHub Actions |
 
-**Latest Verification**: February 8, 2026 — All tests passing on QEMU 6.2.0
+**Latest Verification**: February 8, 2026 ... All tests passing on QEMU 6.2.0
 
 ---
 
@@ -125,37 +125,37 @@ RESULT: PASS
 ## Architecture
 
 ```text
-┌─────────────────────────────────────────┐
-│      WASM Modules (Sandboxed)          │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐ │
-│  │ mqtt.wasm│  │ app.wasm│  │ test.wasm│ │
-│  └─────────┘  └─────────┘  └─────────┘ │
-└─────────────┬───────────────────────────┘
+┌────────────────────────────────────────────┐
+│      WASM Modules (Sandboxed)              │
+│  ┌───────────┐  ┌──────────┐  ┌──────────┐ │
+│  │ mqtt.wasm │  │ app.wasm │  │ test.wasm│ │
+│  └───────────┘  └──────────┘  └──────────┘ │
+└─────────────┬──────────────────────────────┘
               │
-    ┌─────────▼─────────┐
+    ┌─────────▼──────────┐
     │  wasmi Interpreter │
     │  (Host Bridge)     │
-    └─────────┬─────────┘
-              │
-    ┌─────────▼──────────┐
-    │ Capability Checker  │
-    │ (Access Control)    │
     └─────────┬──────────┘
               │
-    ┌─────────▼──────────┐
-    │   Syscall Layer     │
-    │  IPC • Print • MQTT │
-    └─────────┬──────────┘
+    ┌─────────▼────────────┐
+    │  Capability Checker  │
+    │  (Access Control)    │
+    └─────────┬────────────┘
               │
-    ┌─────────▼──────────┐
-    │   Scheduler Core    │
+    ┌─────────▼────────────┐
+    │  Syscall Layer       │
+    │  IPC • Print • MQTT  │
+    └─────────┬────────────┘
+              │
+    ┌─────────▼────────────┐
+    │  Scheduler Core      │
     │  Memory • Interrupts │
-    └─────────┬──────────┘
+    └─────────┬────────────┘
               │
-    ┌─────────▼──────────┐
+    ┌─────────▼───────────┐
     │  Architecture Layer │
-    │  x86-64 │ ARM64    │
-    └────────────────────┘
+    │  x86-64 │ ARM64     │
+    └─────────────────────┘
 ```
 
 ### Key Components
