@@ -265,6 +265,8 @@ See [PROJECT_STATUS.md](docs/PROJECT_STATUS.md) for comprehensive limitations an
 - [Architecture Decisions](DECISIONS.md) — Design rationale and tradeoffs
 - [Benchmarks](BENCHMARKS.md) — Performance measurements and methodology
 - [Build Guide](docs/BUILD.md) — Detailed build instructions
+- [AI Development Notes](docs/AI_DEVELOPMENT.md) — Philosophy and practice of AI-assisted development
+
 
 ---
 
