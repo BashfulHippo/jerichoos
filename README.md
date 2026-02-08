@@ -296,7 +296,7 @@ Built with:
 - [wasmi](https://github.com/paritytech/wasmi) — WebAssembly interpreter
 - [QEMU](https://www.qemu.org/) — Hardware emulation
 
-Special thanks to the Rust embedded and OS dev communities.
+Special thanks to the Rust embedded and OS dev communities. 😘
 
 ---
 
