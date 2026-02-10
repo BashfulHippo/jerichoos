@@ -26,15 +26,22 @@ jobs:
     - name: install qemu
       run: sudo apt-get update && sudo apt-get install -y qemu-system-x86
 
+    - name: enable json target spec globally
+      run: |
+        # bootloader 0.11.x runs internal cargo builds with json targets
+        # for bios stages - newer nightly needs this enabled globally so
+        # the bootloader's child cargo processes pick it up
+        printf '\n[unstable]\njson-target-spec = true\n' >> "${CARGO_HOME}/config.toml"
+
     - name: build kernel
       run: cargo build --bin jericho_os --release --features bootloader-build
 
     - name: check binary size
       run: |
-        # bootloader 0.11.x names output boot-bios-<binary_name>.img
-        BOOT_IMAGE=$(find target -name "boot-bios-*.img" 2>/dev/null | head -1)
+        BOOT_IMAGE=$(find target -name "boot-bios.img" 2>/dev/null | head -1)
         if [ -z "$BOOT_IMAGE" ]; then
-          echo "boot image not found"
+          echo "boot image not found, listing build artifacts for debug:"
+          find target -name "*.img" -o -name "*.efi" 2>/dev/null || true
           exit 1
         fi
 
