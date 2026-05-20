@@ -25,7 +25,7 @@ I don’t view AI assistance as cheating or as virtue, it’s literally just a t
 
 - I **do** support using AI to learn, to prototype, to document, and to explore designs faster *when you remain accountable for the result*.
 - I **don’t** condone using AI to misrepresent authorship, bypass learning you’re claiming you did, or automate harm (emphasis on this last part).
-- In general, if the work is safety-critical, security-sensitive, or affects other people’s trust, the bar for verification and honesty should be higher, not lower.
+- In general, if the work is safety-critical, security-sensitive, or affects other people’s trust, the bar for verification and honesty should be higher.
 
 This repo tries to meet that bar by being explicit about what AI was used for and what humans verified.
 
@@ -65,16 +65,16 @@ AI saved significant time on repetitive work:
 
 ## Where AI Was Weak (and needed STRICT supervision)
 
-### Hardware/boot details ⚠️
+### Hardware/boot details 
 ARM64 boot and exception-level transitions are subtle. AI output often looked legit while still containing very critical mistakes.
 
-### Stateful logic + concurrency ⚠️
+### Stateful logic + concurrency 
 AI can produce code that compiles and *feels* right but violates invariants. Invariants are extremely useful. Do stress tests and assert aggressively.
 
-### `unsafe` Rust ⚠️
+### `unsafe` Rust 
 AI can be casual with aliasing, alignment, lifetimes, volatile/MMIO semantics, and pointer math.
 
-### Environment-specific behavior ❌
+### Environment-specific behavior
 WSL2/QEMU, buffering issues, toolchain differences. As obvious, AI cannot predict these.
 
 ---
@@ -94,30 +94,13 @@ A tight loop kept AI helpful:
 
 ---
 
-## A closing note (industry, fear, and staying human).
+## Closing Note
 
-It's hard to talk about AI without also talking about **power**.
+AI isn't dangerous. I'm not a purist. What I refuse is dependence on something I don't fully understand.
 
-AI is already being used in terrifying ways: manipulative marketing, surveillance systems, military applications, etc. Companies like Palantir surface in these conversations not because their technology is uniquely dangerous, but because they reveal an even deeper truth: institutions don't adopt tools neutrally; they adopt them to extend reach and usually consolidate control. AI doesn't create this impulse. It just makes it cheaper, faster, and harder to really see straight up.
+So I practice deliberately without it:
+- System design exercises with no autocomplete or assistant.
+- Sit in the discomfort of not knowing and reason through it.
+- Build small projects in full isolation.
 
-But I also resist the narrative that "AI will replace us." That story is too clean, too absolute. What I see is more complicated...
-
-- AI replaces discrete tasks, not entire people.
-- It compresses timelines, then inflates expectations, and this, well, creates pressure to move faster without necessarily moving better.
-- Most importantly, it also rewards those who can direct it with precision, evaluate its output with skepticism, and take responsibility for what it produces.
-
-The engineers (referring to uncs) thriving right now aren't the ones being replaced they're the ones being upgraded, quite literally. They already know what matters. They've debugged enough to recognize bad patterns instantly. They have taste, and taste is the one thing AI can't replicate (yet). It can generate, but it can't really discern. That discernment; the ability to say "nah, not like that" is what separates a tool from an agent. People talk about AGI like it's a threshold the model will cross. I think it's a threshold we cross, the moment we can no longer tell the difference between its judgment and our own.
-
-That's the level I want to reach. But not at the cost of losing the foundation beneath me.
-
-So I practice deliberately without AI:
-- system design principles. 
-- lock yourself up and build projects with no assistants/autocomplete
-- debugging sessions where I sit in the discomfort of not knowing and reason my way through.
-
-AI isn't dangeorus and I'm NOT a purist. I only refuse to become dependent on something I don't fully understand. I want to know that if the tools disappeared tomorrow, I'd still be capable. In short, I own the tool, the tool doesn't own me.
-
-If AI is the wind, I want to be the sailor who can read the stars.. tie the knots.. and navigate by dead reckoning (or some other poetic shit like that).
-
-Anyways.
-**JerichoOS treats AI as a tool, not a substitute for skill, judgment, or responsibility.**
+The goal is simple: if the tools disappeared tomorrow, I'd still be capable.
