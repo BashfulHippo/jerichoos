@@ -60,10 +60,8 @@ if echo "$BENCH_OUTPUT" | grep -q "JerichoOS Performance Benchmarks"; then
     fi
 
     echo ""
-    echo "📊 Estimated Performance (based on counter test):"
-    echo "   • Syscall latency: ~40-120 ns (estimated)"
-    echo "   • IPC throughput: ~8-25M messages/sec (estimated)"
-    echo "   • Context switch: Not measured during benchmark phase"
+    echo "ARM64 timing numbers are not reported yet (UART numeric formatting is limited)."
+    echo "See BENCHMARKS.md for what each benchmark measures."
     echo ""
 else
     echo "!  Benchmark suite did not execute or output not detected"

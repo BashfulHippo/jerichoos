@@ -186,16 +186,16 @@ The kernel includes five demonstration programs showcasing core features:
 
 ## Benchmarks
 
-Context switch performance (QEMU-based measurements):
+Context switch timing (QEMU, x86-64):
 
 | Platform | Context Switch | Notes |
 |----------|---------------|-------|
-| x86-64 | ~450 ns | TSC-based timing |
-| ARM64 | ~850 ns | Generic timer (100 Hz) |
+| x86-64 | ~450 ns | `task_yield()` loop timed with `rdtsc`; cycles converted assuming a 3 GHz clock |
+| ARM64 | not reported | UART numeric formatting is limited (see Known Limitations) |
 
-⚠️ **Note**: QEMU benchmarks are indicative only. Real hardware performance will differ.
+⚠️ **Note**: QEMU numbers are relative indicators for comparing kernel changes on one host, not hardware performance.
 
-See [BENCHMARKS.md](BENCHMARKS.md) for detailed methodology and results.
+See [BENCHMARKS.md](BENCHMARKS.md) for what each benchmark function actually measures.
 
 ---
 
@@ -204,19 +204,21 @@ See [BENCHMARKS.md](BENCHMARKS.md) for detailed methodology and results.
 ```
 jerichoos/
 ├── src/
-│   ├── arch/
-│   │   ├── aarch64/      # ARM64 boot, exceptions, MMU
-│   │   └── x86_64/       # x86-64 boot, interrupts, paging
-│   ├── capability.rs     # Access control tokens
-│   ├── syscall.rs        # System call interface
+│   ├── arch/aarch64/     # ARM64 boot, exceptions, GIC, timer, MMU, scheduler
+│   ├── main.rs           # x86-64 entry; GDT/IDT/PIT setup lives in gdt.rs, interrupts.rs
+│   ├── main_aarch64.rs   # ARM64 entry
+│   ├── capability.rs     # Capability tokens, rights, CSpace
+│   ├── ipc.rs            # Capability-checked IPC endpoints
+│   ├── syscall.rs        # Capability syscall dispatcher
 │   ├── scheduler.rs      # Task management
-│   ├── wasm_runtime.rs   # wasmi integration
+│   ├── wasm_runtime.rs   # wasmi integration and host functions
+│   ├── benchmark.rs      # Microbenchmarks (see BENCHMARKS.md)
 │   └── demos/            # Demo orchestration
-├── demos/wasm/           # WASM test modules (.wat/.wasm)
+├── demos/wasm/           # WASM demo modules (.wat sources + vendored .wasm)
 ├── .github/workflows/    # CI pipelines
 ├── demo_x86.sh           # x86-64 test runner
 ├── demo_arm64.sh         # ARM64 test runner
-└── docs/                 # Design docs and decision records
+└── docs/                 # Project status and AI development notes
 ```
 
 ---
@@ -226,8 +228,10 @@ jerichoos/
 ### Build from Source
 
 ```bash
-# x86-64 kernel
-./build_x86.sh
+# x86-64 kernel (two passes: build.rs creates boot images once the kernel binary exists)
+cargo build --bin jericho_os --release --features bootloader-build
+touch build.rs
+cargo build --bin jericho_os --release --features bootloader-build
 
 # ARM64 kernel
 ./build_arm64.sh
@@ -255,7 +259,7 @@ cargo check --bin jericho_os_arm64 --release \
 - **ARM64 UART**: Format string support is limited; numeric values may display as `{}`
 - **Memory Management**: Conservative page setup; not production-grade virtual memory
 - **Warning Debt**: Some compiler warnings need cleanup
-- **MQTT Demos**: Currently use prebuilt `.wasm` artifacts
+- **MQTT Demos**: Use vendored prebuilt `.wasm` example modules; only demos 1-3 are built from `.wat` source in this repo (see `demos/wasm/README.md`)
 
 See [PROJECT_STATUS.md](docs/PROJECT_STATUS.md) for comprehensive limitations and roadmap.
 
@@ -264,9 +268,7 @@ See [PROJECT_STATUS.md](docs/PROJECT_STATUS.md) for comprehensive limitations an
 ## Documentation
 
 - [Project Status](docs/PROJECT_STATUS.md) — Current capabilities and known issues
-- [Architecture Decisions](DECISIONS.md) — Design rationale and tradeoffs
-- [Benchmarks](BENCHMARKS.md) — Performance measurements and methodology
-- [Build Guide](docs/BUILD.md) — Detailed build instructions
+- [Benchmarks](BENCHMARKS.md) — What each benchmark measures and its limits
 - [AI Development Notes](docs/AI_DEVELOPMENT.md) — Philosophy and practice of AI-assisted development
 
 ---
